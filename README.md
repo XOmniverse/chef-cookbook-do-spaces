@@ -21,13 +21,13 @@ Naturally, for security reasons, it would probably be a good idea to store the
 key and secret_key somewhere securely rather than hardcoding them into your
 recipes :)
 
-# Actions
+## Actions
 
 Two actions are available:
 * sync_local_dir (default): Syncs content from a DigitalOcean Space to a local directory.
 * sync_remote_dir: Syncs content from a local directory to a DigitalOcean Space.
 
-# Properties
+## Properties
 
 #### Required:
 * space: The name of the DigitalOcean Space. Can also be specified as the name of the resource for convenience.
