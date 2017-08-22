@@ -38,3 +38,8 @@ Two actions are available:
 
 #### Optional:
 * remote_path: The remote path on the Space to sync files from/to. Defaults to the root directory of the space.
+* s3cfg_template: Specify a specific template to use for the s3cmd configuration instead of the one in this cookbook. Should generally not be necessary.
+
+## What is this thing doing "under the hood"?
+
+It's perfectly safe but a little janky. It basically just installs and uses s3cmd to manage your Space.

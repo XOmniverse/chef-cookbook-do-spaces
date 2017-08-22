@@ -6,6 +6,7 @@ property :remote_path, String, default: ''
 property :key, String, required: true
 property :secret_key, String, required: true
 property :region, String, required: true
+property :s3cfg_template, String, default: ''
 
 actions :sync_local_dir, :sync_remote_dir
 default_action :sync_local_dir
@@ -14,8 +15,13 @@ action :sync_local_dir do
   package 's3cmd'
 
   template '/tmp/dospace_s3cfg' do
-    cookbook 'do-spaces'
-    source 's3cfg.erb'
+    if new_resource.s3cfg_template == ''
+      cookbook 'do-spaces'
+      source 's3cfg.erb'
+    else
+      source new_resource.s3cfg_template
+    end
+
     variables(
       key: new_resource.key,
       secret_key: new_resource.secret_key,
