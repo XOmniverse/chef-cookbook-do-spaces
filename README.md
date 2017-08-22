@@ -21,6 +21,10 @@ Naturally, for security reasons, it would probably be a good idea to store the
 key and secret_key somewhere securely rather than hardcoding them into your
 recipes :)
 
+## Supported OSs
+
+Ubuntu 16.04
+
 ## Actions
 
 Two actions are available:
