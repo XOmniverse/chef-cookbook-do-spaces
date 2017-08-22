@@ -24,8 +24,11 @@ recipes :)
 ## Supported OSs
 
 Ubuntu 14.04 and above
+
 Debian 8 and above
+
 Fedora 25 and above
+
 CentOS 7
 * Note: CentOS support requires installing some RPMs meant for Fedora 26. These will be installed automatically when using this recipe. This is because the version of s3cmd built into CentOS 7 doesn't seem to work correctly.
 
