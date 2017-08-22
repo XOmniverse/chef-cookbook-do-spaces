@@ -23,7 +23,11 @@ recipes :)
 
 ## Supported OSs
 
-Ubuntu 16.04
+Ubuntu 14.04 and above
+Debian 8 and above
+Fedora 25 and above
+CentOS 7
+* Note: CentOS support requires installing some RPMs meant for Fedora 26. These will be installed automatically when using this recipe. This is because the version of s3cmd built into CentOS 7 doesn't seem to work correctly.
 
 ## Actions
 
@@ -42,7 +46,6 @@ Two actions are available:
 
 #### Optional:
 * remote_path: The remote path on the Space to sync files from/to. Defaults to the root directory of the space.
-* s3cfg_template: Specify a specific template to use for the s3cmd configuration instead of the one in this cookbook. Should generally not be necessary.
 
 ## What is this thing doing "under the hood"?
 

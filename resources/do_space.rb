@@ -6,50 +6,24 @@ property :remote_path, String, default: ''
 property :key, String, required: true
 property :secret_key, String, required: true
 property :region, String, required: true
-property :s3cfg_template, String, default: ''
 
 actions :sync_local_dir, :sync_remote_dir
 default_action :sync_local_dir
 
-action :sync_local_dir do
-  package 's3cmd'
-
-  template '/tmp/dospace_s3cfg' do
-    if new_resource.s3cfg_template == ''
-      cookbook 'do-spaces'
-      source 's3cfg.erb'
-    else
-      source new_resource.s3cfg_template
-    end
-
-    variables(
-      key: new_resource.key,
-      secret_key: new_resource.secret_key,
-      region: new_resource.region
-    )
-  end
-
-  local_path = new_resource.local_path
-  local_path += '/' unless local_path[-1] == '/'
-
-  remote_path = new_resource.remote_path
-  remote_path += '/' unless remote_path[-1] == '/' || remote_path == ''
-  unless remote_path[0] == '/' || remote_path == ''
-    remote_path = '/' + remote_path
-  end
-
-  directory local_path
-
-  execute 'clone_space' do
-    command 's3cmd -c "/tmp/dospace_s3cfg" --delete-removed sync '\
-            "s3://#{new_resource.space}#{remote_path} #{local_path}"
-  end
+action_class do
+  include DOSpacesCustomResource::Helpers
 end
 
-action :sync_remote_dir do
-  package 's3cmd'
+action :sync_local_dir do
+  local_config = node['do_space_resource']['s3cfg_local_path']
+  local_path = local_path_sanitize(new_resource.local_path)
+  remote_path = remote_path_sanitize(new_resource.remote_path)
+  sync_command = "s3cmd -c '#{local_config}' --delete-removed sync "\
+                 "s3://#{new_resource.space}#{remote_path} #{local_path}"
 
-  template '/tmp/dospace_s3cfg' do
+  s3cmd_package 'install s3cmd'
+
+  template local_config do
     cookbook 'do-spaces'
     source 's3cfg.erb'
     variables(
@@ -59,19 +33,31 @@ action :sync_remote_dir do
     )
   end
 
-  local_path = new_resource.local_path
-  local_path += '/' unless local_path[-1] == '/'
+  directory local_path
 
-  remote_path = new_resource.remote_path
-  remote_path += '/' unless remote_path[-1] == '/' || remote_path == ''
-  unless remote_path[0] == '/' || remote_path == ''
-    remote_path = '/' + remote_path
+  execute sync_command
+end
+
+action :sync_remote_dir do
+  local_config = node['do_space_resource']['s3cfg_local_path']
+  local_path = local_path_sanitize(new_resource.local_path)
+  remote_path = remote_path_sanitize(new_resource.remote_path)
+  sync_command = "s3cmd -c '#{local_config}' --delete-removed sync "\
+                 "#{local_path} s3://#{new_resource.space}#{remote_path}"
+
+  s3cmd_package 'install s3cmd'
+
+  template local_config do
+    cookbook 'do-spaces'
+    source 's3cfg.erb'
+    variables(
+      key: new_resource.key,
+      secret_key: new_resource.secret_key,
+      region: new_resource.region
+    )
   end
 
   directory local_path
 
-  execute 'clone_space' do
-    command 's3cmd -c "/tmp/dospace_s3cfg" --delete-removed sync '\
-            "#{local_path} s3://#{new_resource.space}#{remote_path}"
-  end
+  execute sync_command
 end
