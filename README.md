@@ -1,5 +1,7 @@
 # do-spaces
 
+Note: This cookbook has not been thoroughly tested! Use with caution! It should be considered an Alpha and not ready for production use.
+
 This cookbook adds a do_space resource you can use to create and manipulate DigitalOcean spaces, and to sync the content of a DigitalOcean Space to your local filesystem or vice versa.
 
 A basic example, which will create the Space 'my-space' if it doesn't exist, and sync the content of the local directory '/website' to the Space directory '/web'.
