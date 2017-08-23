@@ -32,13 +32,12 @@ CentOS 7
 
 ## Actions
 
-Two actions are available:
 * create: Creates a new private Space unless public_space is set to true, in which case, it creates a new public Space. If the Space already exists, updates the permissions of the Space based on the public_space property, while leaving permissions alone if public_space is set to its default value of nil.
 * update: Updates the permissions of the Space based on the public_space property, but does nothing if public_space property is set to its default value of nil. Generates an error if the Space does not exist and the public_space property is set to true or false.
 * delete: Deletes an existing Space. Continues without error if the Space doesn't exist.
 * empty: Deletes all contents of a Space but does not delete the Space itself, leaving it empty. Generates an error if the Space does not exist.
-* sync_local_dir: Syncs content from a Space to a local directory. Generates an error if the Space does not exist; issuing a create action before this action will ensure that this does not occur.
-* sync_remote_dir: Syncs content from a local directory to a Space. Generates an error if the Space does not exist; issuing a create action before this action will ensure that this does not occur.
+* sync_local_dir: Syncs content from a Space to a local directory. If delete_removed is set to true, any files present locally but not in the Space will be deleted from the local file system. Generates an error if the Space does not exist; issuing a create action before this action will ensure that this does not occur.
+* sync_remote_dir: Syncs content from a local directory to a Space. If delete_removed is set to true, any files present in the Space but not in the local directory will be deleted from the Space. Generates an error if the Space does not exist; issuing a create action before this action will ensure that this does not occur.
 
 ## Properties
 
